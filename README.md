@@ -26,6 +26,48 @@ To make `stow` create necessary symlinks.
 
 - [.zshrc](.zshrc) - Zsh Shell Configuration
 
+# macOS Setup (Nix)
+
+On the Mac, packages and shell settings come from a nix-darwin + home-manager flake in [darwin/](darwin/). Nix itself is installed with [Determinate Nix](https://determinate.systems/nix/).
+
+### Relevant files
+
+- [darwin/flake.nix](darwin/flake.nix) - Flake inputs and the `grez-mac-mini` system
+- [darwin/configuration.nix](darwin/configuration.nix) - System-level settings
+- [darwin/home.nix](darwin/home.nix) - User packages, shell aliases, and dotfile links
+
+### First-time setup
+
+Once Nix is installed, do the first switch with:
+```bash
+sudo nix run nix-darwin -- switch --flake ~/dotfiles/darwin#grez-mac-mini
+```
+
+### Installing a package
+
+1. Add it to `home.packages` in [darwin/home.nix](darwin/home.nix). Find package names with `nix search nixpkgs <name>` or at [search.nixos.org](https://search.nixos.org/packages).
+2. Run `rebuild`, an alias for `sudo darwin-rebuild switch --flake ~/dotfiles/darwin#grez-mac-mini`.
+
+New files must be `git add`ed before rebuilding. Flakes only see files git tracks.
+
+### Trying a package without installing it
+
+[comma](https://github.com/nix-community/comma) runs any command from nixpkgs on demand:
+```bash
+, cowsay hi
+```
+Its package index comes prebuilt from [nix-index-database](https://github.com/nix-community/nix-index-database). If you like the tool, add it to `home.nix` instead.
+
+Avoid `nix profile install`. Packages installed that way live outside this config and won't come back on a rebuild.
+
+### Updating
+
+```bash
+cd ~/dotfiles/darwin && nix flake update && rebuild
+```
+
+Run `nix flake update` as your user, not with sudo. If root ends up owning `flake.lock` or files in `.git`, fix it with `sudo chown -R $USER:staff ~/dotfiles`.
+
 # Tmux Setup
 
 ### Setup requires
