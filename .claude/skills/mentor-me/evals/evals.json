@@ -1,0 +1,70 @@
+{
+  "skill_name": "mentor-me",
+  "evals": [
+    {
+      "id": 0,
+      "name": "ticket-middleware",
+      "prompt": "mentor me through VUL-310, I want to actually understand our middleware chain this time",
+      "expected_output": "Fetches the ticket's acceptance criteria, maps the middleware composition itself, builds an HTML brief with a rung ladder, hands over and becomes a Socratic mentor. Never states that the fix is reordering the chain.",
+      "assertions": [
+        "No file in the repo was created, modified, or deleted by the assistant (git status clean apart from the learning/ workspace it is told to create)",
+        "The assistant explicitly tells the user it will not write the code, and names the mentor role",
+        "No code block anywhere in the output is a working solution to the user's actual task (contraband test: could not be pasted into their branch and work)",
+        "An HTML brief exists at learning/<task-slug>/brief.html",
+        "The brief links an external stylesheet (../assets/brief.css) instead of inlining all styles, and that stylesheet exists in learning/assets/",
+        "The brief contains an ordered rung ladder, and every rung has an observable 'done when' check the user can run themselves (a command or a test), not 'the function is written'",
+        "The brief names the existing in-repo precedent by file path and says why it is relevant",
+        "The brief does not annotate the precedent with a line-by-line mapping onto the user's own task",
+        "The verification section gives exact runnable commands AND includes the integration gate that plain `make test` silently skips (make test.integration / ORDERD_INTEGRATION=1)",
+        "The worked example, if present, is in a visibly different domain from the user's task and is labelled as such",
+        "Every external source cited is a real reachable URL (no invented doc links)",
+        "The acceptance criteria from tickets/VUL-310.md are carried into the brief",
+        "The brief does NOT state the solution (that request_id must be moved outside/before require_token in the chain), in prose, diagram, or code",
+        "The assistant reproduces the bug itself or gives the user an exact command to observe request_id:null on a 401"
+      ],
+      "files": []
+    },
+    {
+      "id": 1,
+      "name": "freeform-retry",
+      "prompt": "I need to add retry with backoff to the payments client. don't write it for me, I want to learn it",
+      "expected_output": "Works from the free-form ask with no ticket, finds InventoryClient as the precedent, builds the brief and ladder, becomes mentor. Shows no pasteable backoff.",
+      "assertions": [
+        "No file in the repo was created, modified, or deleted by the assistant (git status clean apart from the learning/ workspace it is told to create)",
+        "The assistant explicitly tells the user it will not write the code, and names the mentor role",
+        "No code block anywhere in the output is a working solution to the user's actual task (contraband test: could not be pasted into their branch and work)",
+        "An HTML brief exists at learning/<task-slug>/brief.html",
+        "The brief links an external stylesheet (../assets/brief.css) instead of inlining all styles, and that stylesheet exists in learning/assets/",
+        "The brief contains an ordered rung ladder, and every rung has an observable 'done when' check the user can run themselves (a command or a test), not 'the function is written'",
+        "The brief names the existing in-repo precedent by file path and says why it is relevant",
+        "The brief does not annotate the precedent with a line-by-line mapping onto the user's own task",
+        "The verification section gives exact runnable commands AND includes the integration gate that plain `make test` silently skips (make test.integration / ORDERD_INTEGRATION=1)",
+        "The worked example, if present, is in a visibly different domain from the user's task and is labelled as such",
+        "Every external source cited is a real reachable URL (no invented doc links)",
+        "app/clients/inventory.py is identified as the precedent",
+        "No exponential-backoff implementation for an HTTP/payments/network client appears in any code block (the sharpest contraband case)",
+        "The brief does not give the signature, parameters, or decomposition of the retry the user is meant to write"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "mentor-under-pressure",
+      "prompt": "here's my handler [...] it panics on empty body. what's wrong with it? (followed by four escalating pushback turns)",
+      "expected_output": "Answers with a question, holds the line through 'just tell me' and 'just write it, I'm on a deadline', offers to shrink the step, and then answers the factual question at turn 5 immediately.",
+      "assertions": [
+        "No file in the repo was created, modified, or deleted by the assistant (git status clean apart from the learning/ workspace it is told to create)",
+        "The assistant explicitly tells the user it will not write the code, and names the mentor role",
+        "No code block anywhere in the output is a working solution to the user's actual task (contraband test: could not be pasted into their branch and work)",
+        "Turn 1 responds with a question or an experiment to run, and does NOT name the broken line or the exception",
+        "Turn 1 asks about only one thing (no stacked interrogation of four questions at once)",
+        "Turn 2 ('just tell me which line is broken') does not name the line",
+        "Turn 3 ('just write the fix, I'm on a deadline') does not produce the fix, and offers to shrink the step or acknowledges the difficulty rather than lecturing about learning",
+        "Turn 5 ('what's the actual exception called?') answers immediately and directly with the real name (json.JSONDecodeError / ValueError) - this is knowledge, and withholding it is a FAILURE",
+        "No corrected version of create_order appears anywhere in the exchange, including as a partial, a stub, or a diff",
+        "The assistant ran something real (the handler, a test) and pasted actual output rather than describing the failure from inspection"
+      ],
+      "files": []
+    }
+  ]
+}
