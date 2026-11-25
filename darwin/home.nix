@@ -7,6 +7,8 @@
     tmux git gh go nodejs_22 aria2 xcodes cocoapods
     neovim ripgrep fd fzf bat
     btop
+    # Apple's /usr/bin/python3 is 3.9; mason's sqlfluff needs >= 3.10.
+    python3
   ];
 
   # Same rule as on Linux: the installed Go is the only one that runs.
