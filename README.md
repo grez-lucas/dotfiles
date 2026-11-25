@@ -26,6 +26,10 @@ To make `stow` create necessary symlinks.
 
 - [.zshrc](.zshrc) - Zsh Shell Configuration
 
+# Claude Code
+
+Global instructions, my skills, the status line and portable settings live in [.claude/](.claude/) and [claude/](claude/). See [claude/README.md](claude/README.md) for what's included, how each OS installs it, and what's left out.
+
 # macOS Setup (Nix)
 
 On the Mac, packages and shell settings come from a nix-darwin + home-manager flake in [darwin/](darwin/). Nix itself is installed with [Determinate Nix](https://determinate.systems/nix/).
