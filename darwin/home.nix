@@ -30,4 +30,13 @@
   # Outside the store, so Ghostty's reload picks up edits without a rebuild.
   xdg.configFile."ghostty".source =
     config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/.config/ghostty";
+
+  # Shared with Linux. Outside the store, so lazy.nvim can write lazy-lock.json.
+  xdg.configFile."nvim".source =
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/.config/nvim";
+
+  # Only the themes: btop rewrites btop.conf on exit, so that stays a local file
+  # and names the theme with color_theme = "everforest-dark-medium".
+  xdg.configFile."btop/themes".source =
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/.config/btop/themes";
 }
