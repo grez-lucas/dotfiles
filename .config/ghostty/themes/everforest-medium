@@ -1,0 +1,32 @@
+# Everforest, dark, medium background. Same palette as
+# kitty/colors/everforest.conf, so the Mac (Ghostty) and Linux (kitty)
+# terminals match.
+#
+# Contrast against #2D353B (WCAG, 4.5:1 floor for body text): foreground
+# 7.38, every accent 4.55 or higher. Upstream's dim grey (#859289, 3.84)
+# fails the floor, so bright black uses grey2 #9DA9A0 (5.12). This is why
+# Ghostty's bundled "Everforest Dark Med" is not used.
+
+background = #2D353B
+foreground = #D3C6AA
+cursor-color = #D3C6AA
+cursor-text = #2D353B
+selection-background = #475258
+selection-foreground = #D3C6AA
+
+palette = 0=#475258
+palette = 1=#E67E80
+palette = 2=#A7C080
+palette = 3=#DBBC7F
+palette = 4=#7FBBB3
+palette = 5=#D699B6
+palette = 6=#83C092
+palette = 7=#D3C6AA
+palette = 8=#9DA9A0
+palette = 9=#E67E80
+palette = 10=#A7C080
+palette = 11=#DBBC7F
+palette = 12=#7FBBB3
+palette = 13=#D699B6
+palette = 14=#83C092
+palette = 15=#D3C6AA

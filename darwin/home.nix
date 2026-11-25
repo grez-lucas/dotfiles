@@ -25,4 +25,9 @@
   # Shared with Linux. Outside the store, so TPM can clone plugins beside it.
   xdg.configFile."tmux".source =
     config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/.config/tmux";
+
+  # The Mac's terminal; Linux runs kitty with the same Everforest palette.
+  # Outside the store, so Ghostty's reload picks up edits without a rebuild.
+  xdg.configFile."ghostty".source =
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/.config/ghostty";
 }

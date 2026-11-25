@@ -1,0 +1,3 @@
+# Ghostty is the Mac's terminal; Linux uses kitty with the same palette.
+# Resolved from ~/.config/ghostty/themes/, linked by darwin/home.nix.
+theme = everforest-medium
