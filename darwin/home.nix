@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 {
   home.stateVersion = "25.05";
 
@@ -41,4 +41,46 @@
   # and names the theme with color_theme = "everforest-dark-medium".
   xdg.configFile."btop/themes".source =
     config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/.config/btop/themes";
+
+  # Everforest ensō wallpaper, applied on every GUI login. NSWorkspace through
+  # JXA instead of System Events, so no Automation permission is needed.
+  #
+  # Not launchd.agents: home-manager bootstraps those into gui/$UID during
+  # activation, which fails (and fails the switch) when nobody is logged in at
+  # the console, the usual state when rebuilding over ssh. Here activation only
+  # installs the plist, and launchd loads it at the next GUI login.
+  home.activation.wallpaperAgent =
+    let
+      label = "local.everforest.wallpaper";
+      script = pkgs.writeText "set-wallpaper.js" ''
+        ObjC.import("AppKit");
+        const url = $.NSURL.fileURLWithPath("${./wallpapers/everforest-enso-3840x2160.jpg}");
+        // Fill the screen, cropping the overflow (16:9 image on any panel).
+        const opts = $.NSDictionary.dictionaryWithObjectsForKeys(
+          [$.NSNumber.numberWithInt($.NSImageScaleProportionallyUpOrDown), $.NSNumber.numberWithBool(true)],
+          [$.NSWorkspaceDesktopImageScalingKey, $.NSWorkspaceDesktopImageAllowClippingKey]);
+        const screens = $.NSScreen.screens;
+        for (let i = 0; i < screens.count; i++) {
+          $.NSWorkspace.sharedWorkspace.setDesktopImageURLForScreenOptionsError(
+            url, screens.objectAtIndex(i), opts, null);
+        }
+      '';
+      plist = pkgs.writeText "${label}.plist" (lib.generators.toPlist { escape = true; } {
+        Label = label;
+        # The Determinate Nix store volume can mount after login items start.
+        ProgramArguments = [ "/bin/sh" "-c" "/bin/wait4path /nix/store && exec /usr/bin/osascript -l JavaScript ${script}" ];
+        RunAtLoad = true;
+        LimitLoadToSessionType = "Aqua";
+        StandardErrorPath = "${config.home.homeDirectory}/Library/Logs/wallpaper.log";
+      });
+      dst = "${config.home.homeDirectory}/Library/LaunchAgents/${label}.plist";
+    in
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      run install -Dm644 ${plist} "${dst}"
+      # Apply right away when a GUI session exists; otherwise the next login does.
+      if /bin/launchctl print "gui/$UID" >/dev/null 2>&1; then
+        run /bin/launchctl bootout "gui/$UID/${label}" 2>/dev/null || true
+        run /bin/launchctl bootstrap "gui/$UID" "${dst}" || true
+      fi
+    '';
 }
