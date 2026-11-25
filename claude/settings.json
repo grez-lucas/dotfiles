@@ -1,0 +1,133 @@
+{
+  "permissions": {
+    "defaultMode": "auto"
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash \"$HOME/.claude/statusline-command.sh\""
+  },
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=\"${TMUX_AGENT_INDICATOR_DIR:-$HOME/.config/tmux/plugins/tmux-agent-indicator}/scripts/agent-state.sh\"; [ ! -x \"$f\" ] || \"$f\" --agent claude --state off"
+          },
+          {
+            "type": "command",
+            "command": "f=\"${TMUX_AGENT_INDICATOR_DIR:-$HOME/.config/tmux/plugins/tmux-agent-indicator}/scripts/agent-state.sh\"; [ ! -x \"$f\" ] || \"$f\" --agent claude --state running"
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=\"${TMUX_AGENT_INDICATOR_DIR:-$HOME/.config/tmux/plugins/tmux-agent-indicator}/scripts/agent-state.sh\"; [ ! -x \"$f\" ] || \"$f\" --agent claude --state needs-input"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=\"${TMUX_AGENT_INDICATOR_DIR:-$HOME/.config/tmux/plugins/tmux-agent-indicator}/scripts/agent-state.sh\"; [ ! -x \"$f\" ] || \"$f\" --agent claude --state done"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=\"$HOME/.config/tmux/plugins/tmux-assistant-resurrect/hooks/claude-session-track.sh\"; [ ! -f \"$f\" ] || bash \"$f\""
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=\"$HOME/.config/tmux/plugins/tmux-assistant-resurrect/hooks/claude-session-cleanup.sh\"; [ ! -f \"$f\" ] || bash \"$f\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=\"$HOME/Documents/obsidian-vault/.tools/vault\"; [ ! -f \"$f\" ] || python3 \"$f\" hook",
+            "timeout": 30,
+            "statusMessage": "Validating vault note"
+          }
+        ]
+      }
+    ]
+  },
+  "model": "opus",
+  "effortLevel": "medium",
+  "modelSettings": {
+    "claude-opus-5": {
+      "effortLevel": "high"
+    },
+    "claude-fable-5-1": {
+      "effortLevel": "medium"
+    },
+    "claude-opus-5-5": {
+      "effortLevel": "high"
+    },
+    "claude-fable-5-2": {
+      "effortLevel": "medium"
+    }
+  },
+  "skillOverrides": {
+    "attach-designs": "name-only",
+    "mentor-me": "name-only",
+    "sync-claude-profiles": "name-only",
+    "obsidian-ai-research": "name-only",
+    "controlling-mobile-devices": "name-only",
+    "evaluar-candidato": "name-only",
+    "gh-axi": "name-only",
+    "prototype": "name-only",
+    "no-mistakes": "off",
+    "find-skills": "off",
+    "skill-creator": "off",
+    "gymly-open-pr": "off",
+    "gymly-reviewer": "off",
+    "gymly-tdd": "off",
+    "gymly-ticket-branch": "off",
+    "gymly-uat": "off",
+    "implement": "off",
+    "grill-with-docs": "off",
+    "teach": "off",
+    "wait-what": "off",
+    "to-tickets": "off",
+    "claude-handoff": "off",
+    "implement-spec": "off",
+    "improve-codebase-architecture": "off",
+    "retro": "off",
+    "to-issues": "off",
+    "to-prd": "off"
+  },
+  "editorMode": "vim",
+  "theme": "dark-ansi",
+  "voice": {
+    "enabled": true,
+    "mode": "hold"
+  },
+  "cleanupPeriodDays": 60,
+  "autoCompactEnabled": false
+}
