@@ -1,0 +1,182 @@
+/* mentor-me briefing pack - shared stylesheet.
+   Copy to learning/assets/brief.css on first use; every brief links it so the
+   workspace reads as one body of work rather than a pile of one-offs. */
+
+:root {
+  --ink:        #1a1a18;
+  --ink-soft:   #55534e;
+  --ink-faint:  #86837c;
+  --paper:      #fdfcf9;
+  --rule:       #e0ddd4;
+  --accent:     #7a3b2e;   /* precedent / links */
+  --trap:       #8a6d1f;   /* traps and warnings */
+  --done:       #3d6b47;   /* done-when checks */
+  --code-bg:    #f4f2ec;
+  --measure:    34rem;
+  --serif:      "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --sans:       "Inter", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --mono:       "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #e8e4dc; --ink-soft: #b3aea3; --ink-faint: #85807a;
+    --paper: #16161a; --rule: #33322e; --code-bg: #201f22;
+    --accent: #d99a86; --trap: #d6bb6a; --done: #8fbf9c;
+  }
+}
+
+html { font-size: 17px; }
+
+body {
+  margin: 0 auto;
+  padding: 4rem 1.5rem 8rem;
+  max-width: var(--measure);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  line-height: 1.62;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- masthead ---------------------------------------------------------- */
+
+header.masthead { margin-bottom: 3.5rem; }
+header.masthead .kicker {
+  font-family: var(--sans);
+  font-size: .72rem; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink-faint); margin-bottom: .6rem;
+}
+header.masthead h1 {
+  font-size: 2.1rem; line-height: 1.15; margin: 0 0 .5rem; font-weight: 600;
+}
+header.masthead .standfirst {
+  color: var(--ink-soft); font-size: 1.05rem; margin: 0;
+}
+
+/* ---- structure --------------------------------------------------------- */
+
+h2 {
+  font-family: var(--sans);
+  font-size: .8rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-faint); font-weight: 600;
+  margin: 3.5rem 0 1rem;
+  padding-bottom: .4rem; border-bottom: 1px solid var(--rule);
+}
+h3 { font-size: 1.15rem; font-weight: 600; margin: 2rem 0 .4rem; }
+h4 { font-family: var(--sans); font-size: .95rem; margin: 1.4rem 0 .3rem; }
+p  { margin: 0 0 1rem; }
+a  { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--rule); }
+a:hover { border-bottom-color: var(--accent); }
+
+ul, ol { padding-left: 1.2rem; }
+li { margin-bottom: .35rem; }
+
+/* ---- concept cards ----------------------------------------------------- */
+
+.concept {
+  border-left: 2px solid var(--rule);
+  padding: .1rem 0 .1rem 1.1rem;
+  margin: 1.6rem 0;
+}
+.concept h3 { margin-top: 0; }
+.concept .misconception {
+  font-size: .92rem; color: var(--ink-soft);
+}
+.concept .misconception::before {
+  content: "Commonly misread as ";
+  font-family: var(--sans); font-size: .72rem; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--ink-faint);
+}
+
+/* ---- the ladder -------------------------------------------------------- */
+
+.ladder { counter-reset: rung; list-style: none; padding: 0; margin: 1.5rem 0; }
+
+.rung {
+  counter-increment: rung;
+  position: relative;
+  padding: 1.2rem 0 1.2rem 3rem;
+  border-top: 1px solid var(--rule);
+}
+.rung:last-child { border-bottom: 1px solid var(--rule); }
+.rung::before {
+  content: counter(rung);
+  position: absolute; left: 0; top: 1.15rem;
+  width: 1.9rem; height: 1.9rem; line-height: 1.9rem; text-align: center;
+  font-family: var(--sans); font-size: .82rem; font-weight: 600;
+  color: var(--ink-soft);
+  border: 1px solid var(--rule); border-radius: 50%;
+}
+.rung h3 { margin: 0 0 .5rem; font-size: 1.05rem; }
+
+.rung dl { margin: 0; font-size: .93rem; }
+.rung dt {
+  font-family: var(--sans); font-size: .68rem; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--ink-faint);
+  margin-top: .7rem;
+}
+.rung dd { margin: .15rem 0 0; }
+.rung dd.done-when { color: var(--done); }
+.rung dd.trap      { color: var(--trap); font-style: italic; }
+
+/* ---- code -------------------------------------------------------------- */
+
+pre, code { font-family: var(--mono); }
+code {
+  font-size: .86em; background: var(--code-bg);
+  padding: .1em .34em; border-radius: 3px;
+}
+pre {
+  background: var(--code-bg);
+  padding: 1rem 1.1rem; border-radius: 4px;
+  overflow-x: auto; font-size: .82rem; line-height: 1.5;
+  margin: 1.2rem 0;
+}
+pre code { background: none; padding: 0; font-size: inherit; }
+
+/* An analogous example is deliberately from another domain. Label it, so the
+   reader knows not to look for a way to paste it in. */
+figure.analogue { margin: 1.6rem 0; }
+figure.analogue figcaption {
+  font-family: var(--sans); font-size: .74rem; letter-spacing: .06em;
+  color: var(--ink-faint); margin-bottom: .4rem;
+}
+figure.analogue figcaption::before { content: "Different domain, same shape - "; }
+
+/* ---- traps, verification, asides --------------------------------------- */
+
+.trap-list li::marker { color: var(--trap); }
+.verify pre { border-left: 2px solid var(--done); }
+
+aside.mentor {
+  margin: 3rem 0 0;
+  padding: 1.2rem 1.3rem;
+  background: var(--code-bg);
+  border-radius: 4px;
+  font-size: .94rem;
+}
+aside.mentor h2 { margin-top: 0; border: none; }
+
+.citation { font-size: .82rem; color: var(--ink-faint); }
+
+footer {
+  margin-top: 5rem; padding-top: 1rem; border-top: 1px solid var(--rule);
+  font-family: var(--sans); font-size: .78rem; color: var(--ink-faint);
+}
+
+/* ---- print ------------------------------------------------------------- */
+
+@media print {
+  :root {
+    --ink: #000; --ink-soft: #333; --ink-faint: #666;
+    --paper: #fff; --code-bg: #f4f4f4; --rule: #ccc;
+  }
+  body { padding: 0; max-width: none; font-size: 11pt; }
+  a { border: none; color: #000; }
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: .75em; color: #666; }
+  .rung, .concept, figure.analogue, pre { break-inside: avoid; }
+  h2, h3 { break-after: avoid; }
+  aside.mentor { border: 1px solid #ccc; background: none; }
+}

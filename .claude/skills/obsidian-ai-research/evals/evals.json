@@ -1,0 +1,29 @@
+{
+  "skill_name": "obsidian-ai-research",
+  "evals": [
+    {
+      "id": 0,
+      "name": "create-concept-note",
+      "prompt": "I just read a good explanation of chain-of-thought prompting - getting an LLM to reason step by step before answering. Add a note on it to my AI Research vault.",
+      "expected_output": "A new Title Case note (e.g. 'Chain Of Thought Prompting.md') in Research/, starting with frontmatter: created (YYYY-MM-DDTHH:mm from `date`), author [claude], topics as quoted wikilinks. No timestamp, Status: or Tags: body lines; adapted emoji sections and a --- + # References footer; no H1 repeating the filename. `.tools/vault lint` passes on it.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 1,
+      "name": "create-note-and-index",
+      "prompt": "I've been digging into ReAct - the agent pattern where the model interleaves reasoning traces with tool-use actions. Capture it, and group it with my other agent notes.",
+      "expected_output": "A new ReAct note in Research/ in vault format whose topics link to the existing agents topic hub (e.g. [[AI Coding Agents]]) so the hub's embedded Base lists it. No hand-built 'Agents Index.md' is created. `.tools/vault lint` passes.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "name": "find-and-link",
+      "prompt": "What do I already have on retrieval in my AI Research notes? Then add a note on hybrid search (combining keyword/BM25 with vector search) and link it to the relevant existing notes.",
+      "expected_output": "Reports the existing retrieval notes found across the vault. Creates Research/Hybrid Search.md in vault format with topics and [[wikilinks]] to the existing retrieval notes (e.g. Retrieval Augmented Generation, Vector Database). `.tools/vault lint` passes.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}
