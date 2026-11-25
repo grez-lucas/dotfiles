@@ -51,8 +51,6 @@ install mattpocock/skills \
   retro \
   tdd \
   teach \
-  to-issues \
-  to-prd \
   to-spec \
   to-tickets \
   wait-what \
