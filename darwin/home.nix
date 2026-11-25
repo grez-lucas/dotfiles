@@ -1,4 +1,13 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
+let
+  # Claude Code config shared with Linux (stow links the same paths there).
+  # Each item is linked on its own, never the whole ~/.claude, which also holds
+  # credentials, history and per-project state. New skills only need git add.
+  claudeSkills = builtins.attrNames
+    (lib.filterAttrs (_: type: type == "directory") (builtins.readDir ../.claude/skills));
+  claudeLinks = [ ".claude/CLAUDE.md" ".claude/statusline-command.sh" "VOICE.md" ]
+    ++ map (skill: ".claude/skills/${skill}") claudeSkills;
+in
 {
   home.stateVersion = "25.05";
 
@@ -41,4 +50,33 @@
   # and names the theme with color_theme = "everforest-dark-medium".
   xdg.configFile."btop/themes".source =
     config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/.config/btop/themes";
+
+  # Outside the store, so edits in ~/dotfiles apply without a rebuild.
+  home.file = lib.genAttrs claudeLinks (path: {
+    source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/${path}";
+  });
+
+  # Move anything already at a Claude link target into a dated backup folder.
+  # It has to run before checkLinkTargets, which refuses to replace them, and
+  # cannot use backupFileExtension: a skills/<name>.backup folder would load as
+  # a second copy of the skill.
+  home.activation.backupClaudeConflicts = lib.hm.dag.entryBefore [ "checkLinkTargets" ] ''
+    claudeBackup="$HOME/.claude/dotfiles-backups/$(date -u +%Y%m%dT%H%M%SZ)"
+    for path in ${lib.escapeShellArgs claudeLinks}; do
+      target="$HOME/$path"
+      if [ -L "$target" ] && [[ "$(readlink "$target")" == /nix/store/* ]]; then
+        continue
+      fi
+      if [ -e "$target" ] || [ -L "$target" ]; then
+        run mkdir -p "$claudeBackup/$(dirname "$path")"
+        run mv "$target" "$claudeBackup/$path"
+      fi
+    done
+  '';
+
+  # settings.json stays a local file: Claude Code writes to it, and it holds
+  # machine-only keys. The portable keys are merged in on every switch.
+  home.activation.mergeClaudeSettings = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+    run env JQ=${pkgs.jq}/bin/jq ${pkgs.bash}/bin/bash ${../claude/merge-settings.sh} ${../claude/settings.json}
+  '';
 }
